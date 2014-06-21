@@ -7,6 +7,7 @@ class SessionsController < ApplicationController
 
   def destroy
     session[:user_id] = nil
+    flash[:error] = 'Could not log in via Google'
     redirect_to root_path
   end
 end

@@ -42,9 +42,12 @@ class Portal < ActiveRecord::Base
     }
 
     response, data = RestClient.post 'https://slack.com/api/oauth.access', payload
+    response = JSON.parse(response)
 
-    if data['ok']
-      self.update_attributes({access_token: data['access_token']})
+    if response['ok']
+      self.update_attributes({access_token: response['access_token']})
+    else
+      false
     end
   end
 
