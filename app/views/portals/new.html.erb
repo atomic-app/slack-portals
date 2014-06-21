@@ -1,0 +1,17 @@
+<h1>Create a Portal</h1>
+
+<%= form_for @portal do |f| %>
+
+  <%= f.label :company_name, 'Company Name*' %>
+  <%= f.text_field :company_name %>
+  <%= f.label :channel_name, 'Channel Name*' %>
+  <%= f.text_field :channel_name %>
+  <%= f.label :incoming_webhook_url, 'Incoming Webhook URL*' %>
+  <%= f.text_field :incoming_webhook_url %>
+  <%= f.label :outgoing_webhook_token, 'Outgoing Webhook Token*' %>
+  <%= f.text_field :outgoing_webhook_token %>
+  <%= f.label :connection_uuid %>
+  <%= f.text_field :connection_uuid %>
+
+  <%= f.submit 'Create and Sync' %>
+<% end %>
