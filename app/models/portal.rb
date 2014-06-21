@@ -5,6 +5,7 @@ require 'net/https'
 class Portal < ActiveRecord::Base
 
   before_create :generate_token
+  after_save :link_uuid
   belongs_to :user
 
   def tunnel(params)
@@ -31,6 +32,10 @@ class Portal < ActiveRecord::Base
 
   def connected_company
     connection ? connection.company_name : 'No End Portal'
+  end
+
+  def link_uuid
+    connection.update_attributes(:connection_uuid => self.connection_uuid) if self.connection_uuid
   end
 
   def sync_access_token!(params)
