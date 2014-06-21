@@ -38,7 +38,7 @@ class Portal < ActiveRecord::Base
       client_id: ENV['SLACK_CLIENT_ID'],
       client_secret: ENV['SLACK_CLIENT_SECRET'],
       code: params[:code],
-      redirect_uri: "https://slack-portal.herokuapp.com/portals/callback"
+      redirect_uri: ENV["SLACK_PORTAL_CALLBACK"]
     }
 
     response, data = RestClient.post 'https://slack.com/api/oauth.access', payload

@@ -7,7 +7,12 @@ SlackPortal::Application.routes.draw do
 
   resources :sessions, only: [:create, :destroy]
   resource :home, only: [:show]
-  resources :portals
+  resources :portals do
+    collection do
+      get :callback
+      post :callback
+    end
+  end
 
   get   'webhooks/incoming', to: 'webhooks#incoming'
   post  'webhooks/incoming', to: 'webhooks#incoming'
