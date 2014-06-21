@@ -16,8 +16,8 @@ class Portal < ActiveRecord::Base
   def send_payload(params)
     payload = { 
       'payload' => JSON({
-        'channel' => self.channel_name.gsub('#', ''), 
-        'username'    => params[:user_name], 
+        'channel' => "##{self.channel_name.gsub('#', '')}", 
+        'username'    => params[:user_name].titleize, 
         'text'        => params[:text], 
         'icon_emoji'  => ':ghost:'
       }).to_s
