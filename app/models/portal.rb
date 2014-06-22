@@ -61,7 +61,7 @@ class Portal < ActiveRecord::Base
       response, data = RestClient.get "https://slack.com/api/users.list?token=#{self.access_token}"
       response = JSON.parse(response)
       if response['ok']
-        self.user_accounts = Hash[response['members'].collect { |m| [m['id'], m['profile']['image_48']] }])
+        self.user_accounts = Hash[response['members'].collect { |m| [m['id'], m['profile']['image_48']] }]
         self.save!
         image_url = self.user_accounts[user_id]
       end
