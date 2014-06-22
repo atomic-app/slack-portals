@@ -58,7 +58,7 @@ class Portal < ActiveRecord::Base
   end
 
   def get_user_image_url(user_id)
-    image_url = self.user_accounts[user_id]
+    image_url = self.user_accounts ? self.user_accounts[user_id] : nil
     unless image_url
       response, data = RestClient.get "https://slack.com/api/users.list?token=#{self.access_token}"
       response = JSON.parse(response)
