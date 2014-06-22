@@ -1,17 +1,130 @@
-<h1>Create a Portal</h1>
+<div class='row'>
+  <div class="large-12 columns">
+    <h3>Create a Portal</h3>
+  </div>
+</div>
+<br/>
 
 <%= form_for @portal do |f| %>
 
-  <%= f.label :company_name, 'Company Name*' %>
-  <%= f.text_field :company_name %>
-  <%= f.label :channel_name, 'Channel Name*' %>
-  <%= f.text_field :channel_name %>
-  <%= f.label :incoming_webhook_url, 'Incoming Webhook URL*' %>
-  <%= f.text_field :incoming_webhook_url %>
-  <%= f.label :outgoing_webhook_token, 'Outgoing Webhook Token*' %>
-  <%= f.text_field :outgoing_webhook_token %>
-  <%= f.label :connection_uuid %>
-  <%= f.text_field :connection_uuid %>
-
-  <%= f.submit 'Create and Sync' %>
+  <div class="row">
+    <div class="large-12 columns">
+      <%= f.label :company_name, 'Your company name*' %>
+        <% if @portal.errors[:company_name].present? %>
+          <small class="error">You need to supply a company name</small>
+        <% end %>
+      <%= f.text_field :company_name %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-12 columns">
+      <%= f.label :channel_name, 'Channel name*' %>
+      <div class="row collapse">
+        <% if @portal.errors[:channel_name].present? %>
+          <small class="error">You need to supply a channel name</small>
+        <% end %>
+        <div class="small-11 columns">
+          <%= f.text_field :channel_name %>
+        </div>
+        <div class="small-1 columns">
+          <a href="#" data-reveal-id="channelName" class="button postfix gray-button">Help</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-12 columns">
+      <%= f.label :incoming_webhook_url, 'Incoming web-hook URL*' %>
+      <div class="row collapse">
+        <% if @portal.errors[:incoming_webhook_url].present? %>
+          <small class="error">You need to supply an incoming web-hook URL</small>
+        <% end %>
+        <div class="small-11 columns">
+          <%= f.text_field :incoming_webhook_url %>
+        </div>
+        <div class="small-1 columns">
+          <a href="#" data-reveal-id="incomingWebhookUrl" class="button postfix gray-button">Help</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-12 columns">
+      <%= f.label :outgoing_webhook_token, 'Outgoing web-hook token*' %>
+      <div class="row collapse">
+        <% if @portal.errors[:outgoing_webhook_token].present? %>
+          <small class="error">You need to supply an outgoing web-hook token</small>
+        <% end %>
+        <div class="small-11 columns">
+          <%= f.text_field :outgoing_webhook_token %>
+        </div>
+        <div class="small-1 columns">
+          <a href="#" data-reveal-id="outgoingWebhookUrl" class="button postfix gray-button">Help</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-12 columns">
+      <%= f.label :connection_uuid , "The other company's unique ID (optional)" %>
+      <div class="row collapse">
+        <div class="small-11 columns">
+          <%= f.text_field :connection_uuid %>
+        </div>
+        <div class="small-1 columns">
+          <a href="#" data-reveal-id="connectionUUID" class="button postfix gray-button">Help</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <div class="row">
+    <div class="large-12 columns">
+      <%= f.submit 'Create and Sync', :class => 'button' %>
+    </div>
+  </div>
 <% end %>
+
+<div id="channelName" class="reveal-modal" data-reveal>
+  <h2>Channel Name</h2>
+  <p class="lead">The channel name for the cross company communications to take place.</p>
+  <p>You'll need to create a dedicated channel for the company portal to bind to, or set it to general if you're feeling like all communication is open.</p>
+  <p>Once you've created the channel, just paste the name in here, we need the channel name so we know where to send incoming messages.</p>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<div id="incomingWebhookUrl" class="reveal-modal" data-reveal>
+  <h2>Incoming Webhook URL</h2>
+  <p class="lead">This is the URL that your Incoming Webhook Integration will create for you.</p>
+  <p>To setup an Incoming Webhook on Slack:</p>
+  <ul>
+    <li>Goto http://{your-slack-account}.slack.com/services/new/incoming-webhook and click 'Add Incoming Webhook'.</li>
+    <li>When it's created it should give you a unique Incoming Webhook URL, paste that link in here so we have a method to send incoming messages to your Slack account.</li>
+    <li>Back on the Slack page, scroll down to 'Integration Settings' and select the channel you just created from the dropdown list</li>
+    <li>Click 'Save Integration' at the bottom of the page</li>
+  </ul>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<div id="outgoingWebhookUrl" class="reveal-modal" data-reveal>
+  <h2>Outgoing Webhook Token</h2>
+  <p class="lead">This is the Token that your Outgoing Webhook Integration will create for you.</p>
+  <p>To setup an Outgoing Webhook on Slack:</p>
+  <ul>
+    <li>Goto http://{your-slack-account}.slack.com/services/new/outgoing-webhook) and click 'Add Outgoing Webhook'.</li>
+    <li>Scroll down the page and find the 'Integration Settings' section, and select the Channel you wish to connect.</li>
+    <li>In the URL(s) section, paste in 'https://slack-portals.herokuapps.com'</li>
+    <li>Copy the integration Token found in the left hand column</li>
+    <li>Click 'Save Integration' at the bottom of the page on Slack</li>
+    <li>Paste the copied token into this form to enable us to determine which messages are coming from your Slack account.</li>
+  </ul>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<div id="connectionUUID" class="reveal-modal" data-reveal>
+  <h2>Connection UUID</h2>
+  <p class="lead">This is were you paste another Company's Unique ID</p>
+  <p>If the company you want to connect to has already setup and account, then they'll need to share their Unique ID with you, paste it in here and it'll connect the two portals together</p>
+  <a class="close-reveal-modal">&#215;</a>
+</div>

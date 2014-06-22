@@ -4,6 +4,8 @@ class Portal < ActiveRecord::Base
   after_save :link_uuid
   belongs_to :user
 
+  validates :company_name, :incoming_webhook_url, :channel_name, :outgoing_webhook_token, presence: true
+
   store_accessor :user_accounts
 
   def tunnel(params)

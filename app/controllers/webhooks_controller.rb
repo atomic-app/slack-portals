@@ -8,7 +8,6 @@ class WebhooksController < ApplicationController
     portal.tunnel(params) if portal && params[:user_id] != 'USLACKBOT'
     render nothing: true, status: 200
   rescue Exception => e
-    logger.error params
     render nothing: true, status: 200
   end
 end

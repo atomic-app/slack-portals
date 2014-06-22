@@ -1,3 +1,21 @@
 // Place all the styles related to the home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+h1, h2, h3, h4, h5, h6, p {
+  font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif !important;
+}
+
+#main-content {
+  margin: 44px 0 22px;
+  padding-bottom: 22px;
+}
+
+.gray-button {
+  background-color: gray;
+  border-color: gray;
+}
+
+small.error {
+  margin-bottom: 0;
+}

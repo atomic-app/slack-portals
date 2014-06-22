@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400' rel='stylesheet' type='text/css'>
 
     <title>Slack Portals</title>
 
@@ -12,15 +13,38 @@
   </head>
 
   <body>
-    <div>
-      <% if current_user %>
-        Signed in as <strong><%= current_user.name %></strong>!
-        <%= link_to "Sign out", signout_path, id: "sign_out" %>
-      <% end %>
-    </div>
-    <div>
+    <nav class="top-bar" data-topbar>
+      <ul class="title-area">
+        <li class="name">
+          <h1><a href="#">Slack Portals</a></h1>
+        </li>
+         <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+      </ul>
+
+      <section class="top-bar-section">
+        <!-- Right Nav Section -->
+        <% if current_user %>
+          <ul class="right">
+            <li class="has-dropdown">
+              <a href="#">Signed in as <strong><%= current_user.name %></strong>!</a>
+              <ul class="dropdown">
+                <li><%= link_to "Sign out", signout_path, id: "sign_out" %></li>
+              </ul>
+            </li>
+          </ul>
+        <% else %>
+          <ul class="right">
+            <li><%= link_to "Sign in with Google", "/auth/google_oauth2", id: "sign_in" %></li>
+          </ul>
+        <% end %>
+      </section>
+    </nav>
+
+    <section id='main-content'>
       <%= yield %>
-    </div>
+    </section>
+
     <%= javascript_include_tag "application" %>
   </body>
 </html>

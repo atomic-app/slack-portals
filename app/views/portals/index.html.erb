@@ -1,37 +1,94 @@
-<h1>Portals</h1>
-<p>Portals are a link to another company's Slack, you each need a Portal setup to communicate, so make sure someone from the other company has signed in and created a Portal too.</p>
+<div class='row'>
+  <div class="large-12 columns">
+    <h5 class='subheader'>Portals are a link to another company's Slack channel, <a href='#' data-reveal-id="stepOne" >click here</a> to find out the steps needed to setup a new Portal.</h5>
+  </div>
+</div>
+<br/>
+<br/>
 
-<p>There are four steps involved in creating a Portal</p>
-<ol>
-  <li><p>Create a channel dedicated to the company2company banter.</p></li>
-  <li><p>Setup an Incoming Webhook on Slack, goto http://{your-slack-account}.slack.com/services/new/incoming-webhook) and make note of the token.</p></li>
-  <li><p>Setup an Outgoing Webhook on Slack, goto http://{your-slack-account}.slack.com/services/new/outgoing-webhook and make note of the token.</p></li>
-  <li><p>Finally, <%= link_to 'create a Portal', new_portal_path %> and add the two tokens, after which you'll be asked to connect Slack with Slack Portals</p></li>
-</ol>
 
-<p>Once you've created a portal, you can share your portals unique ID with the other company, or vice versa, and that will connect the portals together.</p>
+<div class='row'>
+  <div class="large-12 columns">
+    <h2 class='left'>Your Portals</h2>
+    <%= link_to 'Create New Portal', new_portal_path, :class => 'button right' %>
+  </div>
+</div>
+<div class='row'>
+  <div class="large-12 columns">
+    <table style='width: 100%;'>
+      <thead>
+        <tr>
+          <th>Portal #ID</th>
+          <th>Channel Name</th>
+          <th>Portal Unique #ID</th>
+          <th>Connected To</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @portals.each do |portal| %>
+          <tr>
+            <td><%= portal.id %></td>
+            <td><%= portal.channel_name %></td>
+            <td><%= portal.uuid %></td>
+            <td><%= portal.connected_company %></td>
+            <td><%= button_to 'Destroy', portal_path(portal), method: :delete %></td>
+          </tr>
+        <% end %>
+        <% if @portals.empty? %>
+          <tr>
+            <td colspan='5'>You have no portals yet, <%= link_to 'create one now', new_portal_path %>.</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-<h2>Your Portals</h2>
-<%= link_to 'Create New Portal', new_portal_path %>
-<table>
-  <thead>
-    <tr>
-      <th>Portal #ID</th>
-      <th>Channel Name</th>
-      <th>Portal Unique #ID</th>
-      <th>Connected To</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @portals.each do |portal| %>
-      <tr>
-        <td><%= portal.id %></td>
-        <td><%= portal.channel_name %></td>
-        <td><%= portal.uuid %></td>
-        <td><%= portal.connected_company %></td>
-        <td><%= link_to 'Edit', edit_portal_path(portal) %> | <%= button_to 'Destroy', portal_path(portal), method: :delete %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div id="stepOne" class="reveal-modal" data-reveal>
+  <h2>Slack Portals.</h2>
+  <p class="lead">There are a few things involved in setting up a Slack Portal, let's go through what's needed.</p>
+  <p>First things first, you'll need to setup a channel specifically for inter-company communication</p>
+  <p>This is done by clicking on 'CHANNELS' in the main Slack chat screen, then by clicking '+ Create new channel'</p>
+  <p><a href="#" data-reveal-id="stepTwo" class="button right">Continue</a></p>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<div id="stepTwo" class="reveal-modal" data-reveal>
+  <h2>Slack Incoming Web-hook.</h2>
+  <p class="lead">We now need an 'Incoming Web-hook Integration' which will allow us to send messages to the new channel.</p>
+  <p>To setup an Incoming Webhook on Slack:</p>
+  <ul>
+    <li>Goto http://{your-slack-account}.slack.com/services/new/incoming-webhook and click 'Add Incoming Webhook'.</li>
+    <li>When it's created it should give you a unique Incoming Webhook URL, copy this link and keep it handy, we'll need it later.</li>
+    <li>Scroll down to 'Integration Settings' and select the channel you just created from the dropdown list</li>
+    <li>Click 'Save Integration'</li>
+  </ul>
+  <p><a href="#" data-reveal-id="stepOne" class="secondary button left">Back</a><a href="#" data-reveal-id="stepThree" class="button right">Continue</a></p>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<div id="stepThree" class="reveal-modal" data-reveal>
+  <h2>Outgoing Webhook Token</h2>
+  <p class="lead">Next up, we'll need an 'Outgoing Web-hook Integration' which will allow us to pull messages from the new channel.</p>
+  <p>To setup an Outgoing Web-hook on Slack:</p>
+  <ul>
+    <li>Goto http://{your-slack-account}.slack.com/services/new/outgoing-webhook) and click 'Add Outgoing Webhook'.</li>
+    <li>Scroll down the page and find the 'Integration Settings' section, and select the Channel you wish to connect.</li>
+    <li>In the URL(s) section, paste in 'https://slack-portals.herokuapps.com'</li>
+    <li>Copy the integration Token found in the left hand column, keep it handy, we'll need it soon</li>
+    <li>Click 'Save Integration' at the bottom of the page on Slack</li>
+  </ul>
+  <p><a href="#" data-reveal-id="stepTwo" class="secondary button left">Back</a><a href="#" data-reveal-id="stepFour" class="button right">Continue</a></p>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<div id="stepFour" class="reveal-modal" data-reveal>
+  <h2>Connecting Portals Together</h2>
+  <p>Once you've setup both and Incoming and Outgoing integration, you're set to create a Portal</p>
+  <p>During the Portal creation process, you'll be asked to connect to Slack, this is just to get user avatars to post through with the chat</p>
+  <p>After you've created a Portal, you'll be given a Unique Portal ID (UUID), give this to the company you want to connect with and get them to go through this process too, or paste their UUID into the Portal screens to link the accounts together</p>
+  <p>Once you're done you can happily start chatting in the new chat portal, have fun!</p>
+  <p><a href="#" data-reveal-id="stepThree" class="left secondary button">Back</a><%= link_to 'Get Started', new_portal_path, class: "right button" %></p>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
