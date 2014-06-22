@@ -8,7 +8,7 @@ class Portal < ActiveRecord::Base
 
   def tunnel(params)
     user_image_url = self.get_user_image_url(params[:user_id])
-    connection.send_payload(params, user_image) if connection
+    connection.send_payload(params, user_image_url) if connection
   end
 
   # Gross hax to send through payload as a json string
@@ -34,7 +34,9 @@ class Portal < ActiveRecord::Base
   end
 
   def link_uuid
-    connection.update_attributes(:connection_uuid => self.connection_uuid) if self.connection_uuid
+    if self.connection_uuid && connection && !connection.connection_uuid
+      connection.update_attributes(:connection_uuid => self.connection_uuid)
+    end
   end
 
   def sync_access_token!(params)
