@@ -19,6 +19,10 @@ GEM
       activesupport (= 4.0.2)
       arel (~> 4.0.0)
     activerecord-deprecated_finders (1.0.3)
+    activerecord-postgres-hstore (0.7.7)
+      activerecord (>= 3.1)
+      pg-hstore (>= 1.1.5)
+      rake
     activesupport (4.0.2)
       i18n (~> 0.6, >= 0.6.4)
       minitest (~> 4.2)
@@ -60,6 +64,10 @@ GEM
     multi_json (1.10.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
+    nested-hstore (0.0.5)
+      activerecord
+      activerecord-postgres-hstore
+      activesupport
     oauth2 (0.9.4)
       faraday (>= 0.8, < 0.10)
       jwt (~> 1.0)
@@ -78,6 +86,7 @@ GEM
       oauth2 (~> 0.9.3)
       omniauth (~> 1.2)
     pg (0.17.1)
+    pg-hstore (1.2.0)
     polyglot (0.3.5)
     rack (1.5.2)
     rack-test (0.6.2)
@@ -144,6 +153,7 @@ DEPENDENCIES
   dotenv-rails
   jbuilder (~> 1.2)
   jquery-rails
+  nested-hstore
   omniauth-google-oauth2
   pg
   rails (= 4.0.2)

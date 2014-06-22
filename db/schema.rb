@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140621083300) do
+ActiveRecord::Schema.define(version: 20140621234826) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "portals", force: true do |t|
     t.integer  "user_id"
@@ -28,6 +29,7 @@ ActiveRecord::Schema.define(version: 20140621083300) do
     t.string   "company_name"
     t.string   "uuid"
     t.string   "connection_uuid"
+    t.hstore   "user_accounts"
   end
 
   create_table "users", force: true do |t|
