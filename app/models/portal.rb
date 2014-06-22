@@ -7,17 +7,18 @@ class Portal < ActiveRecord::Base
   serialize :user_accounts, ActiveRecord::Coders::NestedHstore
 
   def tunnel(params)
-    connection.send_payload(params) if connection
+    user_image_url = self.get_user_image_url(params[:user_id])
+    connection.send_payload(params, user_image) if connection
   end
 
   # Gross hax to send through payload as a json string
-  def send_payload(params)
+  def send_payload(params, user_image_url)
     payload = { 
       'payload' => JSON({
         'channel' => "##{self.channel_name.gsub('#', '')}", 
         'username'    => params[:user_name], 
         'text'        => params[:text], 
-        'icon_url'    => portal.get_user_image_url(params[:user_id])
+        'icon_url'    => user_image_url
       }).to_s
     }
 
