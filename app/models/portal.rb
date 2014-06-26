@@ -40,6 +40,7 @@ class Portal < ActiveRecord::Base
       other_portal = Portal.where(:uuid => self.connection_uuid).first
       if other_portal && other_portal.connection_uuid.blank?
         other_portal.update_attributes(:connection_uuid => self.uuid)
+      end
     end
   end
 
