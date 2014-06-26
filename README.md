@@ -1,6 +1,10 @@
 Slack Portals
 ===
 
+Slack portals is a Rails server that can connect two different company's Slack channels together. It's available on [https://slack-portals.herokuapp.com](https://slack-portals.herokuapp.com), but you're more than welcome to fork this project and spin up your own Portal Server.
+
+The following instructions will help you setup Slack Portals on a Heroku instance.
+
 1. Setup a Heroku account and add the new 'heroku' remote:
   - Checkout [Deploying with Git](https://devcenter.heroku.com/articles/git) for help
 
@@ -27,6 +31,8 @@ Slack Portals
   - GOOGLE_CLIENT_SECRET='your Google API client secret'
 
 5. Deploy to Heroku `git push heroku master`
+
+6. Run the migrations `heroku run rake db:migrate`
 
 
 
