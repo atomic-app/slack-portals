@@ -23,8 +23,8 @@ The following instructions will help you setup Slack Portals on a Heroku instanc
   - Set the Redirect URI(s) to be https://{your_heroku_app_name}.herokuapp.com/portals/callback
 
 4. Set the following Environment Variables in Heroku:
-  - SLACK_CLIENT_ID='your slack API client id'
-  - SLACK_CLIENT_SECRET='your slack API client secret'
+  - SLACK_CLIENT_ID='your Slack API client id'
+  - SLACK_CLIENT_SECRET='your Slack API client secret'
   - SLACK_PORTAL_CALLBACK='https://{your_heroku_app_name}.herokuapp.com/portals/callback'
   - SLACK_PORTAL_OUTGOING_URL='https://{your_heroku_app_name}.herokuapp.com/webhooks/incoming'
   - GOOGLE_CLIENT_ID='your Google API client id'
@@ -34,6 +34,8 @@ The following instructions will help you setup Slack Portals on a Heroku instanc
 
 6. Run the migrations `heroku run rake db:migrate`
 
+
+And you're done, your server should be up and running, enjoy!
 
 
 The MIT License (MIT)
