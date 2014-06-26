@@ -112,9 +112,9 @@
   <p class="lead">This is the Token that your Outgoing Webhook Integration will create for you.</p>
   <p>To setup an Outgoing Webhook on Slack:</p>
   <ul>
-    <li>Goto http://{your-slack-account}.slack.com/services/new/outgoing-webhook) and click 'Add Outgoing Webhook'.</li>
+    <li>Goto http://{your-slack-account}.slack.com/services/new/outgoing-webhook and click 'Add Outgoing Webhook'.</li>
     <li>Scroll down the page and find the 'Integration Settings' section, and select the Channel you wish to connect.</li>
-    <li>In the URL(s) section, paste in 'https://slack-portals.herokuapps.com'</li>
+    <li>In the URL(s) section, paste in '<%= ENV['SLACK_PORTAL_OUTGOING_URL'] %>'</li>
     <li>Copy the integration Token found in the left hand column</li>
     <li>Click 'Save Integration' at the bottom of the page on Slack</li>
     <li>Paste the copied token into this form to enable us to determine which messages are coming from your Slack account.</li>

@@ -15,11 +15,11 @@ class Portal < ActiveRecord::Base
 
   # Gross hax to send through payload as a json string
   def send_payload(params, user_image_url)
-    payload = { 
+    payload = {
       'payload' => JSON({
-        'channel' => "##{self.channel_name.gsub('#', '')}", 
-        'username'    => params[:user_name], 
-        'text'        => params[:text], 
+        'channel' => "##{self.channel_name.gsub('#', '')}",
+        'username'    => params[:user_name],
+        'text'        => params[:text],
         'icon_url'    => user_image_url
       }).to_s
     }
@@ -36,8 +36,10 @@ class Portal < ActiveRecord::Base
   end
 
   def link_uuid
-    if self.connection_uuid && connection && !connection.connection_uuid
-      connection.update_attributes(:connection_uuid => self.connection_uuid)
+    if self.connection_uuid
+      other_portal = Portal.where(:uuid => self.connection_uuid).first
+      if other_portal && other_portal.connection_uuid.blank?
+        other_portal.update_attributes(:connection_uuid => self.uuid)
     end
   end
 
