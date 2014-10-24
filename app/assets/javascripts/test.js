@@ -1,145 +1,89 @@
-// Модуль отвечает за сохранение данных на сервер
-
-app.modules.saveControl = function(self) {
+/**
+* Построение графиков на основе Google API
+*/
+Visualization = (function(){
   var
-    _queue = [],
-    _config = {
-      url: {
-        job: app.config.urlJob,
-        save: app.config.urlSaveEti
-      },
-      interval: {
-        poll: 500,
-        save: 300
-      },
-      timerId: 0
+    _queue    = [],
+    _element  = null, 
+    _chart    = {'package': 'corechart', 'class': 'AreaChart'},
+    _columns  = [], 
+    _rows     = [], 
+    _params   = {}, 
+    _drawing  = false, 
+
+    _drawChart = function() {
+      var 
+        element        = document.getElementById(_element),
+        data           = new google.visualization.DataTable(),
+        chart          = new google.visualization[_chart[1]](element),
+        columns_length = _columns.length;
+
+      for(var i=0; i<columns_length; i++) {
+        data.addColumn(_columns[i][1], _columns[i][2], _columns[i][0]);
+      }
+      data.addRows(_rows);
+      chart.draw(data, _params);
+
+      _drawing = false;
+      _processQueue();
     },
-    _wait = false;
 
-  function _succeeded(response) {
-    if ($.isEmptyObject(response.error)) {
-      $doc.trigger('succeededSaveControl:Eti');
-    } else {
-      $doc.trigger('validateErrorSaveControl:Eti', [response]);
-    }
-    _wait = false;
-    _start();
-  }
+    _addToQueue = function( element, chart, columns, rows, params ) {
+      _queue.push( [element, chart, columns, rows, params] );
+    },
 
-  function _error(data) {
-    $doc.trigger('errorSaveControl:Eti', [data]);
-  }
-
-  function _poll(pid, data) {
-    $.ajax({
-      url: _config.url.job + '/' + pid,
-      dataType: 'json',
-      success: function(response) {
-        if (response.succeeded || response.failed) {
-          response.succeeded && _succeeded(response.payload);
-          response.failed && _error(data);
-        } else {
-          setTimeout(function() {
-            _poll(pid, data);
-          }, _config.interval.poll);
-        }
-      },
-      error: function() {
-        _error(data);
+    _processQueue = function() {
+      if( !_queue.length ) {
+        return;
       }
-    });
-  }
-
-  function _save(data) {
-    if (!Object.keys(data).length) {
-      _wait = false;
-      return false;
-    }
-    $doc.trigger('savedSaveControl:Eti');
-    $.ajax({
-      url: _config.url.save,
-      data: {'bind_data': data},
-      type: 'POST',
-      dataType: 'json',
-      success: function(response) {
-        _poll(response.job_id, data);
-      },
-      error: function() {
-        _error(data);
+      var 
+        params = _queue.shift();
+      if ( params ) {
+        Visualization.draw( params[0], params[1], params[2], params[3], params[4] );
       }
-    });
-  }
+    },
 
-  function _group() {
-    var data = {};
-    $.each(_queue, function(index, value) {
-      var key = Object.keys(value)[0];
-      data[key] = $.extend(data[key], value[key]);
-    });
-    _queue = [];
-    return data;
-  }
+    _loadChart = function() {
+      google.load('visualization', '1', { 'packages':[_chart[0]] });
+      google.setOnLoadCallback(function() { _drawChart() });
+    };
 
-  function _ungroup(data) {
-    var id, field;
-    for (id in data) {
-      for (field in data[id]) {
-        var
-          object = {},
-          value = {};
+  return {
 
-        value[field] = data[id][field];
-        object[id] = value;
-        _queue.unshift(object);
+    draw : function( element, chart, columns, rows, params ) {
+      if ( _drawing ) {
+        _addToQueue( element, chart, columns, rows, params );
+        return;
       }
-    }
-  }
+      _drawing = true;
 
-  function _start() {
-    clearInterval(_config.timerId);
-    _config.timerId = setTimeout(function() {
-      _wait = true;
-      _save(_group());
-    }, _config.interval.save);
-  }
+      if ( element ) {
+        _element = element;
+      }
+      if ( chart ) {
+        _chart = chart;
+      }
+      if ( columns ) {
+        _columns = columns;
+      }
+      if ( rows ) {
+        _rows = rows;
+      }
+      if ( params ) {
+        _params = params;
+      }
 
-  function _listener() {
-    $doc
-      .on('changeTable:Eti', function(event, data) {
-        _queue.push(data);
-        !_wait && _start();
-      })
-      .on('click', '.js-repeat-save', function() {
-        _ungroup($(this).data());
-        _wait = false;
-        _start();
+      if ( !google ) {
         return false;
-      });
-    $win.on('beforeunload', function() {
-      if (_queue.length || _wait) {
-        return 'Информация, введенная на странице, будет потеряна. Для сохранения изменений нажмите кнопку "Остаться на этой странице"';
       }
-    });
-  }
+      if ( !google.visualization || !google.visualization[_chart[1]] ) {
+        _loadChart();
+      } else {
+        _drawChart();
+      }
+      return true;
+    }      
 
-  self.start = function() {
-    _wait = false;
-    _start();
   };
 
-  self.stop = function() {
-    clearInterval(_config.timerId);
-    _wait = true;
-  };
-
-  self.restart = function(data) {
-    _ungroup(data);
-    self.start();
-  };
-
-  self.load = function() {
-    _listener();
-  };
-
-  return self;
-}(app.modules.saveControl || {});
+}());
