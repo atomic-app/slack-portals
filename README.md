@@ -9,7 +9,7 @@ The following instructions will help you setup Slack Portals on a Heroku instanc
   - Checkout [Deploying with Git](https://devcenter.heroku.com/articles/git) for help
 
 2. Setup a Google OAUTH2 API:
-  - Go to `https://console.developers.google.com`
+  - Go to `https://console.developers.google.com`  
   - Select your project.
   - Click 'APIs & auth'
   - Make sure "Contacts API" and "Google+ API" are on.
