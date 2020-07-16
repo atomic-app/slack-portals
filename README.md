@@ -1,7 +1,10 @@
 Slack Portals
 ===
 
-Slack portals is a Rails server that can connect two different company's Slack channels together. It's available on [https://slack-portals.herokuapp.com](https://slack-portals.herokuapp.com), but you're more than welcome to fork this project and spin up your own Portal Server.
+*This is natively supported by slack. Atomic deprecates support on this project.*
+https://slack.com/intl/en-nz/help/articles/115005912706-Manage-channels-shared-with-external-organizations#allow-additional-organizations-to-join
+
+Slack portals is a Rails server that can connect two different company's Slack channels together. Fork this project and spin up your own Portal Server.
 
 The following instructions will help you setup Slack Portals on a Heroku instance.
 
